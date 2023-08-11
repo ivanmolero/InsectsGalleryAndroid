@@ -3,6 +3,7 @@ package com.imolerodev.digitalartspace
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,6 +28,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.imolerodev.digitalartspace.ui.theme.DigitalArtSpaceTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,10 +38,11 @@ class MainActivity : ComponentActivity() {
             DigitalArtSpaceTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+//                    modifier = Modifier.fillMaxSize(),
+//                    color = MaterialTheme.colorScheme.background
+                    color = Color(0xFFFFFFFF)
                 ) {
-//                    Greeting("Android")
+                    GalleryLayout()
                 }
             }
         }
@@ -49,9 +53,11 @@ class MainActivity : ComponentActivity() {
 fun GalleryLayout(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ImageGallery()
+        ImageGallery(modifier.weight(1.0f))
         DetailImageGallery()
         ControlGallery()
     }
@@ -59,32 +65,53 @@ fun GalleryLayout(modifier: Modifier = Modifier) {
 
 @Composable
 fun ImageGallery(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.image_gallery_01),
-        contentDescription = null
-    )
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(32.dp),
+        shadowElevation = 15.dp,
+        color = Color(0xFFFFFFFF),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.image_gallery_01),
+            contentDescription = null,
+            modifier = modifier
+                .padding(16.dp)
+        )
+    }
 }
 
 @Composable
 fun DetailImageGallery(modifier: Modifier = Modifier) {
-    Column(
+    Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .background(color = Color.Gray)
             .padding(16.dp),
-        horizontalAlignment = Alignment.Start,
+        color = Color(0xFFEBEBEB),
+        shape = RoundedCornerShape(8.dp)
     ) {
-        Text(
-            text = "Hackberry Emperor Butterfly",
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Serif,
-            fontStyle = FontStyle.Italic,
-            fontSize = MaterialTheme.typography.headlineSmall
-        )
-        Text(
-            text = "Stephen Rahn (2012)"
-        )
+        Column(
+            modifier = modifier
+                .padding(16.dp),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Text(
+                text = "Hackberry Emperor Butterfly",
+                fontFamily = FontFamily.Serif,
+                fontStyle = FontStyle.Italic,
+                fontSize = 20.sp
+            )
+            Row {
+                Text(
+                    text = "Stephen Rahn",
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "(2012)"
+                )
+            }
+        }
     }
 }
 
@@ -92,7 +119,11 @@ fun DetailImageGallery(modifier: Modifier = Modifier) {
 fun ControlGallery(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(
+                bottom = 16.dp,
+                top = 16.dp
+            ),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
