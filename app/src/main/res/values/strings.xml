@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DigitalArtSpace</string>
+    <string name="image_01">Hackberry Emperor Butterfly|Stephen Rahn|(2012)</string>
+    <string name="image_02">Red Devil\'s Horse|Bogdan Krawczyk|(2017)</string>
+    <string name="image_03">Medioluto Inés|Frayle|(2017)</string>
+    <string name="image_04">A very nice bee (macro)|Jon Brinn|(2017)</string>
+    <string name="image_05">The Leopard Lacewing (Cethosia cyane)|Bernard Spragg|(2015)</string>
+    <string name="image_06">Cairns Birdwings|Bernard Spragg|(2013)</string>
 </resources>

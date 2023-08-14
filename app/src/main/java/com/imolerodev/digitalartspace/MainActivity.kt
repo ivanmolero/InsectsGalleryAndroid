@@ -3,9 +3,7 @@ package com.imolerodev.digitalartspace
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,14 +13,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,20 +53,58 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GalleryLayout(modifier: Modifier = Modifier) {
+    var position by remember {
+        mutableStateOf(0)
+    }
+    val limit = 6
+
+    val details = when(position) {
+        0 -> stringResource(id = R.string.image_01).split("|")
+        1 -> stringResource(id = R.string.image_02).split("|")
+        2 -> stringResource(id = R.string.image_03).split("|")
+        3 -> stringResource(id = R.string.image_04).split("|")
+        4 -> stringResource(id = R.string.image_05).split("|")
+        5 -> stringResource(id = R.string.image_06).split("|")
+        else -> stringResource(id = R.string.image_01).split("|")
+    }
+
+    val image = when(position) {
+        0 -> R.drawable.image_gallery_01
+        1 -> R.drawable.image_gallery_02
+        2 -> R.drawable.image_gallery_03
+        3 -> R.drawable.image_gallery_04
+        4 -> R.drawable.image_gallery_05
+        5 -> R.drawable.image_gallery_06
+        else -> R.drawable.image_gallery_01
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ImageGallery(modifier.weight(1.0f))
-        DetailImageGallery()
-        ControlGallery()
+        ImageGallery(image = image, modifier.weight(1.0f))
+        DetailImageGallery(
+            title = details[0],
+            author = details[1],
+            year = details[2])
+        ControlGallery(
+            {
+                position = if (position < 1) limit - 1 else position - 1
+//                position--
+//                if (position < 0) position = limit - 1
+            },
+            {
+                position = if (position == limit - 1) 0 else position + 1
+//                position++
+//                if (position == limit) position = 0
+            })
     }
 }
 
 @Composable
-fun ImageGallery(modifier: Modifier = Modifier) {
+fun ImageGallery(image: Int, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -74,7 +114,7 @@ fun ImageGallery(modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(16.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.image_gallery_01),
+            painter = painterResource(id = image),
             contentDescription = null,
             modifier = modifier
                 .padding(16.dp)
@@ -83,7 +123,7 @@ fun ImageGallery(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun DetailImageGallery(modifier: Modifier = Modifier) {
+fun DetailImageGallery(title: String, author: String, year: String, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -97,18 +137,18 @@ fun DetailImageGallery(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = "Hackberry Emperor Butterfly",
+                text = title,
                 fontFamily = FontFamily.Serif,
                 fontStyle = FontStyle.Italic,
                 fontSize = 20.sp
             )
             Row {
                 Text(
-                    text = "Stephen Rahn",
+                    text = author,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "(2012)"
+                    text = year
                 )
             }
         }
@@ -116,7 +156,7 @@ fun DetailImageGallery(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ControlGallery(modifier: Modifier = Modifier) {
+fun ControlGallery(anterior: () -> Unit, siguiente: () -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -127,7 +167,7 @@ fun ControlGallery(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        Button(onClick = { /*TODO*/ },
+        Button(onClick = anterior,
             modifier = modifier
                 .width(150.dp),
         ) {
@@ -135,7 +175,7 @@ fun ControlGallery(modifier: Modifier = Modifier) {
                 text = "Anterior"
             )
         }
-        Button(onClick = { /*TODO*/ },
+        Button(onClick = siguiente,
             modifier = modifier
                 .width(150.dp),
         ) {
@@ -153,11 +193,3 @@ fun GalleryLayoutPreview() {
         GalleryLayout()
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    DigitalArtSpaceTheme {
-//        Greeting("Android")
-//    }
-//}
