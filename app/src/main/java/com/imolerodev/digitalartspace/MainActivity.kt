@@ -92,13 +92,9 @@ fun GalleryLayout(modifier: Modifier = Modifier) {
         ControlGallery(
             {
                 position = if (position < 1) limit - 1 else position - 1
-//                position--
-//                if (position < 0) position = limit - 1
             },
             {
                 position = if (position == limit - 1) 0 else position + 1
-//                position++
-//                if (position == limit) position = 0
             })
     }
 }
